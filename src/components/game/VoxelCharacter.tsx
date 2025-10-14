@@ -65,7 +65,7 @@ export const VoxelCharacter = ({ characterId = 'Char01' }: VoxelCharacterProps) 
                 });
 
                 // Scale the model
-                obj.scale.set(0.5, 0.5, 0.5);
+                obj.scale.set(0.9, 0.9, 0.9);
                 obj.position.set(0, 0, 0);
 
                 setModel(obj);

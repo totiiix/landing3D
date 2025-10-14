@@ -3,7 +3,12 @@ import { Player } from './Player';
 import { Ground } from './Ground';
 import { Camera } from './Camera';
 
-export const Scene = () => {
+interface SceneProps {
+  characterId: string;
+  isEntering: boolean;
+}
+
+export const Scene = ({ characterId, isEntering }: SceneProps) => {
   return (
     <Canvas shadows camera={{ position: [0, 8, -8], fov: 60 }}>
       {/* Basic Lighting */}
@@ -22,7 +27,7 @@ export const Scene = () => {
       />
 
       {/* Game Objects */}
-      <Player />
+      <Player characterId={characterId} isEntering={isEntering} />
       <Ground />
 
       {/* Camera Controller */}

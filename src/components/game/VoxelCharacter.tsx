@@ -64,9 +64,10 @@ export const VoxelCharacter = ({ characterId = 'Char01' }: VoxelCharacterProps) 
                   }
                 });
 
-                // Scale the model
+                // Scale and rotate the model
                 obj.scale.set(0.9, 0.9, 0.9);
                 obj.position.set(0, 0, 0);
+                obj.rotation.y = Math.PI; // Rotate 180 degrees
 
                 setModel(obj);
               },

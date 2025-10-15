@@ -1,36 +1,25 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { CharacterPreview } from './CharacterPreview';
 
 interface CharacterMenuProps {
   currentCharacter: string;
   onSelectCharacter: (characterId: string) => void;
+  mousePos: { x: number; y: number };
 }
 
-export const CharacterMenu = ({ currentCharacter, onSelectCharacter }: CharacterMenuProps) => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+export const CharacterMenu = ({ currentCharacter, onSelectCharacter, mousePos }: CharacterMenuProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const characters = Array.from({ length: 14 }, (_, i) => ({
     id: `Char${String(i + 1).padStart(2, '0')}`,
     name: `Character ${i + 1}`,
   }));
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setMousePos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    }
-  };
-
   return (
     <div
       ref={containerRef}
-      onMouseMove={handleMouseMove}
       style={{
         position: 'absolute',
-        bottom: '30px',
+        top: '30px',
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 1000,
@@ -49,17 +38,18 @@ export const CharacterMenu = ({ currentCharacter, onSelectCharacter }: Character
         {characters.map((char, index) => {
           const charSize = currentCharacter === char.id ? 70 : 50;
           const gap = 12;
-          // Calculate approximate position of this character preview
-          const totalWidth = characters.reduce((sum, c, i) => {
-            const size = currentCharacter === c.id ? 70 : 50;
-            return sum + size + (i < characters.length - 1 ? gap : 0);
-          }, 0);
 
+          // Calculate position of this character preview relative to viewport
           let leftOffset = 0;
           for (let i = 0; i < index; i++) {
             leftOffset += (currentCharacter === characters[i].id ? 70 : 50) + gap;
           }
           leftOffset += charSize / 2; // Center of this preview
+
+          // Get container position in viewport
+          const containerRect = containerRef.current?.getBoundingClientRect();
+          const previewCenterX = containerRect ? containerRect.left + 24 + leftOffset : 0;
+          const previewCenterY = containerRect ? containerRect.top + 16 + charSize / 2 : 0;
 
           return (
             <div
@@ -96,7 +86,7 @@ export const CharacterMenu = ({ currentCharacter, onSelectCharacter }: Character
                 characterId={char.id}
                 isActive={currentCharacter === char.id}
                 mousePos={mousePos}
-                previewCenter={{ x: leftOffset + 24, y: 16 + charSize / 2 }} // Add padding offset
+                previewCenter={{ x: previewCenterX, y: previewCenterY }}
               />
             </div>
           );

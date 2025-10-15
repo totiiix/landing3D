@@ -22,15 +22,15 @@ const RotatingCharacter = ({
   const groupRef = useRef<THREE.Group>(null);
 
   const targetRotation = useMemo(() => {
-    if (!mousePos || !previewCenter) return Math.PI; // Default: 180°
+    if (!mousePos || !previewCenter) return 0; // Default: face forward
 
     // Calculate angle from preview center to mouse
     const dx = mousePos.x - previewCenter.x;
     const dy = mousePos.y - previewCenter.y;
     const angle = Math.atan2(dx, dy);
 
-    // Add Math.PI to align with the default down-facing orientation
-    return angle + Math.PI;
+    // Model is already rotated 180° in VoxelCharacter, so just use the angle
+    return angle;
   }, [mousePos, previewCenter]);
 
   useFrame(() => {
@@ -48,7 +48,7 @@ const RotatingCharacter = ({
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.9, 0]} rotation={[0, Math.PI, 0]}>
+    <group ref={groupRef} position={[0, -0.9, 0]} rotation={[0, 0, 0]}>
       <VoxelCharacter characterId={characterId} />
     </group>
   );

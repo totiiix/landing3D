@@ -2,6 +2,8 @@ import { Canvas } from '@react-three/fiber';
 import { Player } from './Player';
 import { Ground } from './Ground';
 import { Camera } from './Camera';
+import { DecorationLayer } from './DecorationLayer';
+import { TestDecorationLayer } from './TestDecorationLayer';
 
 interface SceneProps {
   characterId: string;
@@ -29,6 +31,10 @@ export const Scene = ({ characterId, isEntering }: SceneProps) => {
       {/* Game Objects */}
       <Player characterId={characterId} isEntering={isEntering} />
       <Ground />
+      <DecorationLayer />
+
+      {/* Test Decorations - Commentez cette ligne pour désactiver les modèles de test */}
+      <TestDecorationLayer />
 
       {/* Camera Controller */}
       <Camera />

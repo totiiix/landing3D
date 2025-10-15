@@ -30,7 +30,7 @@ export const Duck = ({
   scale = 1,
   gridPosition = { x: 15, z: 12 },
 }: DuckProps) => {
-  const { scene } = useGLTF('/models/test/duck.glb');
+  const { scene } = useGLTF('/models/animals/duck.glb');
   const groupRef = useRef<THREE.Group>(null);
   const { updateDuckPosition } = useDynamicEntities();
 
@@ -271,4 +271,4 @@ export const Duck = ({
 };
 
 // Précharger le modèle
-useGLTF.preload('/models/test/duck.glb');
+useGLTF.preload('/models/animals/duck.glb');

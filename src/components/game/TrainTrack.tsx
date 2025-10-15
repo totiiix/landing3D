@@ -1,31 +1,29 @@
 import { useGLTF } from '@react-three/drei';
-import { useEffect } from 'react';
 import * as THREE from 'three';
 
-interface BigTreeProps {
+interface TrainTrackProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: number;
 }
 
-export const BigTree = ({
+export const TrainTrack = ({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = 1,
-}: BigTreeProps) => {
-  const { scene } = useGLTF('/models/nature/big_tree.glb');
+}: TrainTrackProps) => {
+  const { scene } = useGLTF('/models/nature/train_track.glb');
 
   // Cloner la scène pour pouvoir l'utiliser plusieurs fois
   const clonedScene = scene.clone();
 
-  useEffect(() => {
-    clonedScene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-  }, [clonedScene]);
+  // Activer les ombres pour tous les meshes
+  clonedScene.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
 
   return (
     <primitive
@@ -38,4 +36,4 @@ export const BigTree = ({
 };
 
 // Précharger le modèle
-useGLTF.preload('/models/nature/big_tree.glb');
+useGLTF.preload('/models/nature/train_track.glb');

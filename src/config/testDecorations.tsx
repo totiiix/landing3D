@@ -1,6 +1,8 @@
-import { TestTree, TestRock, TestFence, TestBush, TestLamp } from '../components/game/TestModels';
+import { TestRock, TestFence, TestBush, TestLamp } from '../components/game/TestModels';
 import { BigTree } from '../components/game/BigTree';
+import { Tree } from '../components/game/Tree';
 import { Duck } from '../components/game/Duck';
+import { TrainTrack } from '../components/game/TrainTrack';
 
 // Configuration pour les modèles de test (sans GLB)
 // Utilisez ceci pour voir des exemples immédiatement
@@ -32,27 +34,35 @@ const allDecorations: TestDecoration[] = [
   // Arbres dans les coins
   {
     id: 'tree-1',
-    Component: TestTree,
-    gridPosition: { x: 3, z: 3 },
-    scale: 1,
+    Component: Tree,
+    gridPosition: { x: 2, z: 3 },
+    yOffset: 0.05,
+    scale: 0.015,
+    rotation: [0, 0, 0], // 0°
   },
   {
     id: 'tree-2',
-    Component: TestTree,
-    gridPosition: { x: 16, z: 3 },
-    scale: 1.2,
+    Component: Tree,
+    gridPosition: { x: 17, z: 3 },
+    yOffset: 0.05,
+    scale: 0.020,
+    rotation: [0, Math.PI / 2, 0], // 90°
   },
   {
     id: 'tree-3',
-    Component: TestTree,
-    gridPosition: { x: 3, z: 16 },
-    scale: 0.9,
+    Component: Tree,
+    gridPosition: { x: 6, z: 16 },
+    yOffset: 0.05,
+    scale: 0.025,
+    rotation: [0, Math.PI, 0], // 180°
   },
   {
     id: 'tree-4',
-    Component: TestTree,
-    gridPosition: { x: 16, z: 16 },
-    scale: 1.1,
+    Component: Tree,
+    gridPosition: { x: 16, z: 18 },
+    yOffset: 0.05,
+    scale: 0.015,
+    rotation: [0, -Math.PI / 2, 0], // 270° (-90°)
   },
 
   // Rochers dispersés
@@ -160,6 +170,193 @@ const allDecorations: TestDecoration[] = [
     gridPosition: { x: 10, z: 18 },
     yOffset: 0.5 ,
     scale: 0.017,
+  },
+
+  // Ligne de rails devant la grille (de gauche à droite)
+  {
+    id: 'track-1',
+    Component: TrainTrack,
+    gridPosition: { x: 0, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0], // Rotation 90° pour orientation horizontale
+  },
+  {
+    id: 'track-2',
+    Component: TrainTrack,
+    gridPosition: { x: 1, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-3',
+    Component: TrainTrack,
+    gridPosition: { x: 2, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-4',
+    Component: TrainTrack,
+    gridPosition: { x: 3, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-5',
+    Component: TrainTrack,
+    gridPosition: { x: 4, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-6',
+    Component: TrainTrack,
+    gridPosition: { x: 5, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-7',
+    Component: TrainTrack,
+    gridPosition: { x: 6, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-8',
+    Component: TrainTrack,
+    gridPosition: { x: 7, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-9',
+    Component: TrainTrack,
+    gridPosition: { x: 8, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-10',
+    Component: TrainTrack,
+    gridPosition: { x: 9, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-11',
+    Component: TrainTrack,
+    gridPosition: { x: 10, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-12',
+    Component: TrainTrack,
+    gridPosition: { x: 11, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-13',
+    Component: TrainTrack,
+    gridPosition: { x: 12, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-14',
+    Component: TrainTrack,
+    gridPosition: { x: 13, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-15',
+    Component: TrainTrack,
+    gridPosition: { x: 14, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-16',
+    Component: TrainTrack,
+    gridPosition: { x: 15, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-17',
+    Component: TrainTrack,
+    gridPosition: { x: 16, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-18',
+    Component: TrainTrack,
+    gridPosition: { x: 17, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-19',
+    Component: TrainTrack,
+    gridPosition: { x: 18, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-20',
+    Component: TrainTrack,
+    gridPosition: { x: 19, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  // Extension de la ligne vers la gauche (x négatifs)
+  {
+    id: 'track-21',
+    Component: TrainTrack,
+    gridPosition: { x: -1, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-22',
+    Component: TrainTrack,
+    gridPosition: { x: -2, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-23',
+    Component: TrainTrack,
+    gridPosition: { x: -3, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
   },
 ];
 

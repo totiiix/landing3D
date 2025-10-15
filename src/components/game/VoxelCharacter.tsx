@@ -17,7 +17,7 @@ export const VoxelCharacter = ({ characterId = 'Char01' }: VoxelCharacterProps) 
     // Load MTL (material) first
     const mtlLoader = new MTLLoader();
     mtlLoader.load(
-      `/models/${characterId}/${characterId}.mtl`,
+      `/models/characters/${characterId}/${characterId}.mtl`,
       (materials) => {
         console.log(`Materials loaded: ${characterId}`);
         materials.preload();
@@ -25,7 +25,7 @@ export const VoxelCharacter = ({ characterId = 'Char01' }: VoxelCharacterProps) 
         // Load texture
         const textureLoader = new THREE.TextureLoader();
         textureLoader.load(
-          `/models/${characterId}/${characterId}.png`,
+          `/models/characters/${characterId}/${characterId}.png`,
           (texture) => {
             console.log(`Texture loaded: ${characterId}`);
             // Set texture filtering for crisp voxel look
@@ -37,7 +37,7 @@ export const VoxelCharacter = ({ characterId = 'Char01' }: VoxelCharacterProps) 
             const objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load(
-              `/models/${characterId}/${characterId}.obj`,
+              `/models/characters/${characterId}/${characterId}.obj`,
               (obj) => {
                 console.log(`Model loaded: ${characterId}`);
 

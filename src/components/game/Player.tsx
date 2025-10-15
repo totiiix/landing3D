@@ -6,6 +6,7 @@ import { isPositionOccupied } from '../../config/testDecorations';
 import { VoxelCharacter } from './VoxelCharacter';
 import { DustParticles } from './DustParticles';
 import { WalkDustTrail } from './WalkDustTrail';
+import { useDynamicEntities } from '../../contexts/DynamicEntitiesContext';
 import * as THREE from 'three';
 
 const TILE_SIZE = 1;
@@ -25,6 +26,7 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const keys = useKeyboard();
   const { playFootstep, stopFootstep, playLanding, playCollision } = useFootstepSound();
+  const { isDuckAt } = useDynamicEntities();
 
   // Entrance animation state
   const [entranceProgress, setEntranceProgress] = useState(0);
@@ -132,8 +134,10 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
         newZ = Math.max(0, Math.min(GRID_SIZE - 1, newZ));
 
         if (newX !== gridPos.x || newZ !== gridPos.z) {
-          // Vérifier si la position est occupée par un décor
-          if (!isPositionOccupied(newX, newZ)) {
+          // Vérifier si la position est occupée par un décor ou le canard
+          const isOccupied = isPositionOccupied(newX, newZ) || isDuckAt(newX, newZ);
+
+          if (!isOccupied) {
             setStartPos({ x: gridPos.x, z: gridPos.z });
             setTargetPos({ x: newX, z: newZ });
             setTargetRotation(rotation);

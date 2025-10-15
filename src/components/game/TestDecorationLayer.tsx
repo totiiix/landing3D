@@ -18,6 +18,7 @@ export const TestDecorationLayer = () => {
             position={[worldPos.x, worldPos.y, worldPos.z]}
             rotation={deco.rotation || [0, 0, 0]}
             scale={deco.scale || 1}
+            gridPosition={deco.gridPosition}
           />
         );
       })}

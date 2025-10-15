@@ -1,4 +1,6 @@
 import { TestTree, TestRock, TestFence, TestBush, TestLamp } from '../components/game/TestModels';
+import { BigTree } from '../components/game/BigTree';
+import { Duck } from '../components/game/Duck';
 
 // Configuration pour les modèles de test (sans GLB)
 // Utilisez ceci pour voir des exemples immédiatement
@@ -123,6 +125,41 @@ const allDecorations: TestDecoration[] = [
     id: 'lamp-2',
     Component: TestLamp,
     gridPosition: { x: 14, z: 9 },
+  },
+
+  // Grand arbre (big_tree du pack nature) - Prend 4 cases (2x2)
+  // Position centrale de l'arbre
+  {
+    id: 'big-tree-1',
+    Component: BigTree,
+    gridPosition: { x: 10, z: 5 },
+    yOffset: 0.05,
+    scale: 0.2,
+  },
+  // Cases additionnelles pour collision (arbre 2x2)
+  {
+    id: 'big-tree-collision-1',
+    Component: () => null,
+    gridPosition: { x: 11, z: 5 },
+  },
+  {
+    id: 'big-tree-collision-2',
+    Component: () => null,
+    gridPosition: { x: 10, z: 6 },
+  },
+  {
+    id: 'big-tree-collision-3',
+    Component: () => null,
+    gridPosition: { x: 11, z: 6 },
+  },
+
+  // Canard (duck) - Prend 1 case
+  {
+    id: 'duck-1',
+    Component: Duck,
+    gridPosition: { x: 10, z: 18 },
+    yOffset: 0.5 ,
+    scale: 0.017,
   },
 ];
 

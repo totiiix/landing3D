@@ -3,6 +3,7 @@ import { Scene } from './components/game/Scene';
 import { CharacterMenu } from './components/ui/CharacterMenu';
 import { AudioMenu } from './components/ui/AudioMenu';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
+import { DynamicEntitiesProvider } from './contexts/DynamicEntitiesContext';
 
 type GameState = 'entering' | 'playing';
 
@@ -56,31 +57,33 @@ function App() {
   };
 
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)',
-        position: 'relative'
-      }}
-    >
-      {/* Audio settings menu */}
-      <AudioMenu />
+    <DynamicEntitiesProvider>
+      <div
+        onMouseMove={handleMouseMove}
+        style={{
+          width: '100vw',
+          height: '100vh',
+          background: 'linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%)',
+          position: 'relative'
+        }}
+      >
+        {/* Audio settings menu */}
+        <AudioMenu />
 
-      {/* Character selection menu */}
-      <CharacterMenu
-        currentCharacter={selectedCharacter}
-        onSelectCharacter={handleSelectCharacter}
-        mousePos={mousePos}
-      />
+        {/* Character selection menu */}
+        <CharacterMenu
+          currentCharacter={selectedCharacter}
+          onSelectCharacter={handleSelectCharacter}
+          mousePos={mousePos}
+        />
 
-      {/* Game scene */}
-      <Scene
-        characterId={selectedCharacter}
-        isEntering={gameState === 'entering'}
-      />
-    </div>
+        {/* Game scene */}
+        <Scene
+          characterId={selectedCharacter}
+          isEntering={gameState === 'entering'}
+        />
+      </div>
+    </DynamicEntitiesProvider>
   );
 }
 

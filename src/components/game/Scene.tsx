@@ -4,13 +4,15 @@ import { Ground } from './Ground';
 import { Camera } from './Camera';
 import { DecorationLayer } from './DecorationLayer';
 import { TestDecorationLayer } from './TestDecorationLayer';
+import { GridDebug } from './GridDebug';
+import { memo } from 'react';
 
 interface SceneProps {
   characterId: string;
   isEntering: boolean;
 }
 
-export const Scene = ({ characterId, isEntering }: SceneProps) => {
+const SceneComponent = ({ characterId, isEntering }: SceneProps) => {
   return (
     <Canvas shadows camera={{ position: [0, 8, -8], fov: 60 }}>
       {/* Basic Lighting */}
@@ -36,8 +38,14 @@ export const Scene = ({ characterId, isEntering }: SceneProps) => {
       {/* Test Decorations - Commentez cette ligne pour désactiver les modèles de test */}
       <TestDecorationLayer />
 
+      {/* Debug: Points rouges au centre de chaque case - Décommentez pour debug */}
+      {/* <GridDebug /> */}
+
       {/* Camera Controller */}
       <Camera />
     </Canvas>
   );
 };
+
+// Mémoize le composant pour éviter les re-renders lors des mouvements de souris
+export const Scene = memo(SceneComponent);

@@ -5,6 +5,7 @@ import { Camera } from './Camera';
 import { DecorationLayer } from './DecorationLayer';
 import { TestDecorationLayer } from './TestDecorationLayer';
 import { GridDebug } from './GridDebug';
+import { GlobalFog } from './GlobalFog';
 import { memo } from 'react';
 
 interface SceneProps {
@@ -15,6 +16,9 @@ interface SceneProps {
 const SceneComponent = ({ characterId, isEntering }: SceneProps) => {
   return (
     <Canvas shadows camera={{ position: [0, 8, -8], fov: 60 }}>
+      {/* Global Fog Effect */}
+      <GlobalFog />
+
       {/* Basic Lighting */}
       <ambientLight intensity={0.5} />
       <directionalLight

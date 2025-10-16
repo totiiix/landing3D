@@ -3,6 +3,7 @@ import { BigTree } from '../components/game/BigTree';
 import { Tree } from '../components/game/Tree';
 import { Duck } from '../components/game/Duck';
 import { TrainTrack } from '../components/game/TrainTrack';
+import { Train } from '../components/game/Train';
 
 // Configuration pour les modèles de test (sans GLB)
 // Utilisez ceci pour voir des exemples immédiatement
@@ -35,7 +36,7 @@ const allDecorations: TestDecoration[] = [
   {
     id: 'tree-1',
     Component: Tree,
-    gridPosition: { x: 2, z: 3 },
+    gridPosition: { x: 5, z: 3 },
     yOffset: 0.05,
     scale: 0.015,
     rotation: [0, 0, 0], // 0°
@@ -142,7 +143,7 @@ const allDecorations: TestDecoration[] = [
   {
     id: 'big-tree-1',
     Component: BigTree,
-    gridPosition: { x: 10, z: 5 },
+    gridPosition: { x: 10, z: 4 },
     yOffset: 0.05,
     scale: 0.2,
   },
@@ -150,17 +151,17 @@ const allDecorations: TestDecoration[] = [
   {
     id: 'big-tree-collision-1',
     Component: () => null,
-    gridPosition: { x: 11, z: 5 },
+    gridPosition: { x: 11, z: 4 },
   },
   {
     id: 'big-tree-collision-2',
     Component: () => null,
-    gridPosition: { x: 10, z: 6 },
+    gridPosition: { x: 10, z: 5 },
   },
   {
     id: 'big-tree-collision-3',
     Component: () => null,
-    gridPosition: { x: 11, z: 6 },
+    gridPosition: { x: 11, z: 5 },
   },
 
   // Canard (duck) - Prend 1 case
@@ -357,6 +358,42 @@ const allDecorations: TestDecoration[] = [
     yOffset: 0.01,
     scale: 0.05,
     rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-24',
+    Component: TrainTrack,
+    gridPosition: { x: -4, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-25',
+    Component: TrainTrack,
+    gridPosition: { x: -5, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+  {
+    id: 'track-26',
+    Component: TrainTrack,
+    gridPosition: { x: -6, z: 22 },
+    yOffset: 0.01,
+    scale: 0.05,
+    rotation: [0, Math.PI / 2, 0],
+  },
+
+  // Train sur les rails
+  // Note: Le modèle 3D a un décalage interne, donc les valeurs semblent incohérentes
+  // mais produisent le bon positionnement visuel sur les rails
+  {
+    id: 'train-1',
+    Component: Train,
+    gridPosition: { x: -50, z: 299.4 },
+    yOffset: -10,
+    scale: 0.6,
+    rotation: [0, 0, 0],
   },
 ];
 

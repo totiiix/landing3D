@@ -6,10 +6,9 @@ export const useFootstepSound = () => {
   const { soundEffectsEnabled } = useAudioSettings();
   const footstepAudioRef = useRef<HTMLAudioElement | null>(null);
   const landingAudioRef = useRef<HTMLAudioElement | null>(null);
-  const collisionAudioRef = useRef<HTMLAudioElement | null>(null);
   const currentFootstepRef = useRef<HTMLAudioElement | null>(null); // Track currently playing footstep
-  const isLoadedRef = useRef({ footstep: false, landing: false, collision: false });
-  const useFallbackRef = useRef({ footstep: false, landing: false, collision: false });
+  const isLoadedRef = useRef({ footstep: false, landing: false });
+  const useFallbackRef = useRef({ footstep: false, landing: false });
 
   // Fallback: Synthesized sounds
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -73,32 +72,6 @@ export const useFootstepSound = () => {
     }
   }, [getAudioContext]);
 
-  const playSynthCollision = useCallback(() => {
-    try {
-      const ctx = getAudioContext();
-      if (ctx.state === 'suspended') ctx.resume();
-      if (ctx.state !== 'running') return;
-
-      const now = ctx.currentTime;
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      oscillator.frequency.setValueAtTime(200, now);
-      oscillator.frequency.exponentialRampToValueAtTime(50, now + 0.08);
-      gainNode.gain.setValueAtTime(0.4, now);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-
-      oscillator.type = 'square';
-      oscillator.start(now);
-      oscillator.stop(now + 0.08);
-    } catch (error) {
-      console.error('Error playing synth collision:', error);
-    }
-  }, [getAudioContext]);
-
   // Load audio files
   useEffect(() => {
     const loadFootstep = async () => {
@@ -141,29 +114,8 @@ export const useFootstepSound = () => {
       }
     };
 
-    const loadCollision = async () => {
-      try {
-        const audio = new Audio(AUDIO_PATHS.sfx.collision);
-        audio.volume = AUDIO_VOLUMES.collision;
-        audio.preload = 'auto';
-        await new Promise((resolve, reject) => {
-          audio.addEventListener('canplaythrough', resolve, { once: true });
-          audio.addEventListener('error', reject, { once: true });
-          audio.load();
-        });
-        collisionAudioRef.current = audio;
-        isLoadedRef.current.collision = true;
-        console.log('Collision sound loaded:', AUDIO_PATHS.sfx.collision);
-      } catch (error) {
-        console.warn('Could not load collision sound, using synthesized fallback');
-        useFallbackRef.current.collision = true;
-        isLoadedRef.current.collision = true;
-      }
-    };
-
     loadFootstep();
     loadLanding();
-    loadCollision();
   }, []);
 
   const playFootstep = useCallback(() => {
@@ -225,23 +177,5 @@ export const useFootstepSound = () => {
     }
   }, [soundEffectsEnabled, playSynthLanding]);
 
-  const playCollision = useCallback(() => {
-    if (!soundEffectsEnabled) return;
-
-    if (useFallbackRef.current.collision) {
-      playSynthCollision();
-      return;
-    }
-
-    if (collisionAudioRef.current) {
-      // Clone and play to allow overlapping sounds
-      const clone = collisionAudioRef.current.cloneNode() as HTMLAudioElement;
-      clone.volume = AUDIO_VOLUMES.collision;
-      clone.play().catch((error) => {
-        console.error('Error playing collision:', error);
-      });
-    }
-  }, [soundEffectsEnabled, playSynthCollision]);
-
-  return { playFootstep, stopFootstep, playLanding, playCollision };
+  return { playFootstep, stopFootstep, playLanding };
 };

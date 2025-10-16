@@ -148,9 +148,11 @@ export const useBackgroundMusic = () => {
   // Initialize audio on user interaction
   useEffect(() => {
     const handleInteraction = () => {
-      shouldBePlayingRef.current = true;
-      if (musicEnabled) {
-        startMusic();
+      if (!shouldBePlayingRef.current) {
+        shouldBePlayingRef.current = true;
+        if (musicEnabled) {
+          startMusic();
+        }
       }
     };
 
@@ -161,17 +163,20 @@ export const useBackgroundMusic = () => {
       window.removeEventListener('click', handleInteraction);
       window.removeEventListener('keydown', handleInteraction);
       stopMusic();
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
     };
   }, [startMusic, stopMusic, musicEnabled]);
 
   // Handle music enable/disable
   useEffect(() => {
-    if (shouldBePlayingRef.current) {
-      if (musicEnabled) {
-        startMusic();
-      } else {
-        stopMusic();
-      }
+    if (!shouldBePlayingRef.current) return; // Don't start until user interaction
+
+    if (musicEnabled) {
+      startMusic();
+    } else {
+      stopMusic();
     }
   }, [musicEnabled, startMusic, stopMusic]);
 

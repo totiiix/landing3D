@@ -1,9 +1,15 @@
-import { TestRock, TestFence, TestBush, TestLamp } from '../components/game/TestModels';
+import { TestRock, TestFence, TestBush } from '../components/game/TestModels';
 import { BigTree } from '../components/game/BigTree';
 import { Tree } from '../components/game/Tree';
 import { Duck } from '../components/game/Duck';
 import { TrainTrack } from '../components/game/TrainTrack';
 import { Train } from '../components/game/Train';
+import { House } from '../components/game/House';
+import { Car } from '../components/game/Car';
+import { ParkingSpot } from '../components/game/ParkingSpot';
+import { Cactus } from '../components/game/Cactus';
+import { OldMan } from '../components/game/OldMan';
+import type { CollisionSoundType } from '../hooks/useCollisionSound';
 
 // Configuration pour les modèles de test (sans GLB)
 // Utilisez ceci pour voir des exemples immédiatement
@@ -25,6 +31,8 @@ export interface TestDecoration {
   yOffset?: number;
   rotation?: [number, number, number];
   scale?: number;
+  collisionSound?: CollisionSoundType;
+  color?: string;
 }
 
 // Position de départ du personnage (centre de la grille)
@@ -40,6 +48,7 @@ const allDecorations: TestDecoration[] = [
     yOffset: 0.05,
     scale: 0.015,
     rotation: [0, 0, 0], // 0°
+    collisionSound: 'tree',
   },
   {
     id: 'tree-2',
@@ -48,6 +57,7 @@ const allDecorations: TestDecoration[] = [
     yOffset: 0.05,
     scale: 0.020,
     rotation: [0, Math.PI / 2, 0], // 90°
+    collisionSound: 'tree',
   },
   {
     id: 'tree-3',
@@ -56,6 +66,7 @@ const allDecorations: TestDecoration[] = [
     yOffset: 0.05,
     scale: 0.025,
     rotation: [0, Math.PI, 0], // 180°
+    collisionSound: 'tree',
   },
   {
     id: 'tree-4',
@@ -64,6 +75,7 @@ const allDecorations: TestDecoration[] = [
     yOffset: 0.05,
     scale: 0.015,
     rotation: [0, -Math.PI / 2, 0], // 270° (-90°)
+    collisionSound: 'tree',
   },
 
   // Rochers dispersés
@@ -72,6 +84,7 @@ const allDecorations: TestDecoration[] = [
     Component: TestRock,
     gridPosition: { x: 7, z: 5 },
     rotation: [0, Math.PI / 6, 0],
+    collisionSound: 'rock',
   },
   {
     id: 'rock-2',
@@ -79,32 +92,146 @@ const allDecorations: TestDecoration[] = [
     gridPosition: { x: 12, z: 8 },
     rotation: [0, -Math.PI / 4, 0],
     scale: 0.8,
+    collisionSound: 'rock',
   },
   {
     id: 'rock-3',
     Component: TestRock,
     gridPosition: { x: 5, z: 14 },
     rotation: [0, Math.PI / 3, 0],
+    collisionSound: 'rock',
+  },
+  {
+    id: 'rock-4',
+    Component: TestRock,
+    gridPosition: { x: 17, z: 6 },
+    rotation: [0, Math.PI / 8, 0],
+    scale: 1.1,
+    collisionSound: 'rock',
+  },
+  {
+    id: 'rock-5',
+    Component: TestRock,
+    gridPosition: { x: 3, z: 3 },
+    rotation: [0, -Math.PI / 3, 0],
+    scale: 0.9,
+    collisionSound: 'rock',
+  },
+  {
+    id: 'rock-6',
+    Component: TestRock,
+    gridPosition: { x: 14, z: 15 },
+    rotation: [0, Math.PI / 5, 0],
+    collisionSound: 'rock',
+  },
+  {
+    id: 'rock-7',
+    Component: TestRock,
+    gridPosition: { x: 8, z: 18 },
+    rotation: [0, -Math.PI / 6, 0],
+    scale: 0.85,
+    collisionSound: 'rock',
+  },
+  {
+    id: 'rock-8',
+    Component: TestRock,
+    gridPosition: { x: 18, z: 14 },
+    rotation: [0, Math.PI / 4, 0],
+    scale: 1.05,
+    collisionSound: 'rock',
   },
 
   // Clôture en ligne
   {
     id: 'fence-1',
     Component: TestFence,
-    gridPosition: { x: 8, z: 10 },
+    gridPosition: { x: 4, z: 18 },
     rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
   },
   {
     id: 'fence-2',
     Component: TestFence,
-    gridPosition: { x: 9, z: 10 },
+    gridPosition: { x: 4, z: 19 },
     rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-3',
+    Component: TestFence,
+    gridPosition: { x: 9, z: 15 },
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
   },
   {
     id: 'fence-4',
     Component: TestFence,
-    gridPosition: { x: 11, z: 10 },
+    gridPosition: { x: 9, z: 14 },
     rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-5',
+    Component: TestFence,
+    gridPosition: { x: 13, z: 11 },
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-6',
+    Component: TestFence,
+    gridPosition: { x: 13, z: 10 },
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-7',
+    Component: TestFence,
+    gridPosition: { x: 18, z: 6},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-8',
+    Component: TestFence,
+    gridPosition: { x: 19, z: 6},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-9',
+    Component: TestFence,
+    gridPosition: { x: 19, z: 6},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-10',
+    Component: TestFence,
+    gridPosition: { x: 17, z: 18},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-11',
+    Component: TestFence,
+    gridPosition: { x: 1, z: 17},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-12',
+    Component: TestFence,
+    gridPosition: { x: 2, z: 17},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
+  },
+  {
+    id: 'fence-13',
+    Component: TestFence,
+    gridPosition: { x: 3, z: 17},
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'fence',
   },
 
   // Buissons décoratifs
@@ -112,30 +239,76 @@ const allDecorations: TestDecoration[] = [
     id: 'bush-1',
     Component: TestBush,
     gridPosition: { x: 6, z: 7 },
+    color: '#E8D96B', // Jaune paille
   },
   {
     id: 'bush-2',
     Component: TestBush,
     gridPosition: { x: 13, z: 12 },
     scale: 0.9,
+    color: '#7A8C4A', // Vert olive
   },
   {
     id: 'bush-3',
     Component: TestBush,
     gridPosition: { x: 4, z: 11 },
     scale: 1.1,
-  },
-
-  // Lampadaires
-  {
-    id: 'lamp-1',
-    Component: TestLamp,
-    gridPosition: { x: 5, z: 9 },
+    color: '#8B7355', // Marron clair
   },
   {
-    id: 'lamp-2',
-    Component: TestLamp,
-    gridPosition: { x: 14, z: 9 },
+    id: 'bush-4',
+    Component: TestBush,
+    gridPosition: { x: 16, z: 5 },
+    scale: 0.95,
+    rotation: [0, Math.PI / 3, 0],
+    color: '#B8A347', // Jaune-vert olive
+  },
+  {
+    id: 'bush-5',
+    Component: TestBush,
+    gridPosition: { x: 9, z: 16 },
+    scale: 1.05,
+    rotation: [0, -Math.PI / 4, 0],
+    color: '#5A7C3E', // Vert foncé
+  },
+  {
+    id: 'bush-6',
+    Component: TestBush,
+    gridPosition: { x: 2, z: 6 },
+    scale: 0.85,
+    rotation: [0, Math.PI / 6, 0],
+    color: '#6B5D3F', // Marron foncé
+  },
+  {
+    id: 'bush-7',
+    Component: TestBush,
+    gridPosition: { x: 15, z: 11 },
+    rotation: [0, -Math.PI / 5, 0],
+    color: '#D4B870', // Jaune doré
+  },
+  {
+    id: 'bush-8',
+    Component: TestBush,
+    gridPosition: { x: 7, z: 2 },
+    scale: 0.9,
+    rotation: [0, Math.PI / 2, 0],
+    color: '#9C8B5A', // Beige-marron
+  },
+  {
+    id: 'bush-9',
+    Component: TestBush,
+    gridPosition: { x: 18, z: 17 },
+    scale: 1.1,
+    rotation: [0, -Math.PI / 3, 0],
+    color: '#6D8C42', // Vert mousse
+  },
+  {
+    id: 'bush-10',
+    Component: TestBush,
+    gridPosition: { x: 11, z: 14 },
+    scale: 0.95,
+    rotation: [0, Math.PI / 7, 0],
+    color: '#A0954F', // Olive clair
   },
 
   // Grand arbre (big_tree du pack nature) - Prend 4 cases (2x2)
@@ -146,22 +319,56 @@ const allDecorations: TestDecoration[] = [
     gridPosition: { x: 10, z: 4 },
     yOffset: 0.05,
     scale: 0.2,
+    collisionSound: 'bigTree',
   },
   // Cases additionnelles pour collision (arbre 2x2)
   {
     id: 'big-tree-collision-1',
     Component: () => null,
     gridPosition: { x: 11, z: 4 },
+    collisionSound: 'bigTree',
   },
   {
     id: 'big-tree-collision-2',
     Component: () => null,
     gridPosition: { x: 10, z: 5 },
+    collisionSound: 'bigTree',
   },
   {
     id: 'big-tree-collision-3',
     Component: () => null,
     gridPosition: { x: 11, z: 5 },
+    collisionSound: 'bigTree',
+  },
+
+  // Deuxième grand arbre - Prend 4 cases (2x2)
+  {
+    id: 'big-tree-2',
+    Component: BigTree,
+    gridPosition: { x: 3, z: 8 },
+    yOffset: 0.05,
+    scale: 0.22,
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'bigTree',
+  },
+  // Cases additionnelles pour collision (arbre 2x2)
+  {
+    id: 'big-tree-2-collision-1',
+    Component: () => null,
+    gridPosition: { x: 4, z: 8 },
+    collisionSound: 'bigTree',
+  },
+  {
+    id: 'big-tree-2-collision-2',
+    Component: () => null,
+    gridPosition: { x: 3, z: 9 },
+    collisionSound: 'bigTree',
+  },
+  {
+    id: 'big-tree-2-collision-3',
+    Component: () => null,
+    gridPosition: { x: 4, z: 9 },
+    collisionSound: 'bigTree',
   },
 
   // Canard (duck) - Prend 1 case
@@ -171,6 +378,65 @@ const allDecorations: TestDecoration[] = [
     gridPosition: { x: 10, z: 18 },
     yOffset: 0.5 ,
     scale: 0.017,
+  },
+
+  // Rocher sur la position de départ du canard
+  {
+    id: 'rock-9',
+    Component: TestRock,
+    gridPosition: { x: 10, z: 18 },
+    rotation: [0, Math.PI / 3, 0],
+    scale: 0.9,
+    collisionSound: 'rock',
+  },
+
+  // Vieil homme
+  {
+    id: 'old-man-1',
+    Component: OldMan,
+    gridPosition: { x: 2, z: 18 },
+    yOffset: 0.05,
+    scale: 0.9,
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'oldMan',
+  },
+
+  // Cactus dispersés
+  {
+    id: 'cactus-1',
+    Component: Cactus,
+    gridPosition: { x: 8, z: 6 },
+    yOffset: 0.05,
+    scale: 0.4,
+    rotation: [0, Math.PI / 4, 0],
+    collisionSound: 'cactus',
+  },
+  {
+    id: 'cactus-2',
+    Component: Cactus,
+    gridPosition: { x: 17, z: 12 },
+    yOffset: 0.05,
+    scale: 0.8,
+    rotation: [0, -Math.PI / 2, 0],
+    collisionSound: 'cactus',
+  },
+  {
+    id: 'cactus-3',
+    Component: Cactus,
+    gridPosition: { x: 4, z: 17 },
+    yOffset: 0.05,
+    scale: 0.6,
+    rotation: [0, Math.PI / 2, 0],
+    collisionSound: 'cactus',
+  },
+  {
+    id: 'cactus-4',
+    Component: Cactus,
+    gridPosition: { x: 13, z: 4 },
+    yOffset: 0.05,
+    scale: 0.8,
+    rotation: [0, Math.PI , 0],
+    collisionSound: 'cactus',
   },
 
   // Ligne de rails devant la grille (de gauche à droite)
@@ -395,6 +661,49 @@ const allDecorations: TestDecoration[] = [
     scale: 0.6,
     rotation: [0, 0, 0],
   },
+
+  // Maison
+  {
+    id: 'house-1',
+    Component: House,
+    gridPosition: { x: 10, z: -5 },
+    yOffset: 0.05,
+    scale: 1.1,
+    rotation: [0, 0, 0],
+  },
+
+  // Place de parking
+  {
+    id: 'parking-1',
+    Component: ParkingSpot,
+    gridPosition: { x: 21.5, z: 12 },
+    yOffset: 0.01,
+    rotation: [0, 0, 0],
+  },
+
+   {
+    id: 'parking-2',
+    Component: ParkingSpot,
+    gridPosition: { x: 21.5, z: 6 },
+    yOffset: 0.01,
+    rotation: [0, 0, 0],
+  },
+
+  // Voiture - Prend 2 cases (1x2)
+  {
+    id: 'car-1',
+    Component: Car,
+    gridPosition: { x: 20.1, z: 11 },
+    yOffset: 0,
+    scale: 0.1,
+    rotation: [0, 2 * Math.PI , 0],
+  },
+  // Case additionnelle pour collision (voiture 1x2)
+  {
+    id: 'car-collision-1',
+    Component: () => null,
+    gridPosition: { x: 21, z: 13 },
+  },
 ];
 
 // Filtrer les décors pour exclure la position de départ du personnage
@@ -409,4 +718,12 @@ export const isPositionOccupied = (x: number, z: number): boolean => {
   return testDecorations.some(
     (deco) => deco.gridPosition.x === x && deco.gridPosition.z === z
   );
+};
+
+// Fonction pour obtenir le type de son de collision à une position
+export const getCollisionSoundAt = (x: number, z: number): CollisionSoundType => {
+  const deco = testDecorations.find(
+    (deco) => deco.gridPosition.x === x && deco.gridPosition.z === z
+  );
+  return deco?.collisionSound || 'default';
 };

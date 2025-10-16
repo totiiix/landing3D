@@ -2,7 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { useFootstepSound } from '../../hooks/useFootstepSound';
-import { isPositionOccupied } from '../../config/testDecorations';
+import { useCollisionSound } from '../../hooks/useCollisionSound';
+import { isPositionOccupied, getCollisionSoundAt } from '../../config/testDecorations';
 import { VoxelCharacter } from './VoxelCharacter';
 import { DustParticles } from './DustParticles';
 import { WalkDustTrail } from './WalkDustTrail';
@@ -25,8 +26,9 @@ interface PlayerProps {
 export const Player = ({ characterId, isEntering }: PlayerProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const keys = useKeyboard();
-  const { playFootstep, stopFootstep, playLanding, playCollision } = useFootstepSound();
-  const { isDuckAt } = useDynamicEntities();
+  const { playFootstep, stopFootstep, playLanding } = useFootstepSound();
+  const { playCollision } = useCollisionSound();
+  const { isDuckAt, updatePlayerPosition } = useDynamicEntities();
 
   // Entrance animation state
   const [entranceProgress, setEntranceProgress] = useState(0);
@@ -154,7 +156,9 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
             // Jouer le son de collision seulement si c'est une nouvelle collision
             const collisionKey = `${newX},${newZ}`;
             if (lastCollisionPositionRef.current !== collisionKey) {
-              playCollision();
+              // Obtenir le type de son de collision selon l'objet
+              const collisionType = isDuckAt(newX, newZ) ? 'duck' : getCollisionSoundAt(newX, newZ);
+              playCollision(collisionType);
               lastCollisionPositionRef.current = collisionKey;
             }
           }
@@ -264,6 +268,8 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
         lastTrailTimeRef.current = 0;
         // Stop footstep sound when movement ends
         stopFootstep();
+        // Update player position in context
+        updatePlayerPosition(targetPos);
       }
     }
 

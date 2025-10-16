@@ -9,15 +9,22 @@ interface DynamicEntitiesContextType {
   duckPosition: EntityPosition | null;
   updateDuckPosition: (position: EntityPosition) => void;
   isDuckAt: (x: number, z: number) => boolean;
+  playerPosition: EntityPosition | null;
+  updatePlayerPosition: (position: EntityPosition) => void;
 }
 
 const DynamicEntitiesContext = createContext<DynamicEntitiesContextType | undefined>(undefined);
 
 export const DynamicEntitiesProvider = ({ children }: { children: ReactNode }) => {
   const [duckPosition, setDuckPosition] = useState<EntityPosition | null>(null);
+  const [playerPosition, setPlayerPosition] = useState<EntityPosition | null>(null);
 
   const updateDuckPosition = useCallback((position: EntityPosition) => {
     setDuckPosition(position);
+  }, []);
+
+  const updatePlayerPosition = useCallback((position: EntityPosition) => {
+    setPlayerPosition(position);
   }, []);
 
   const isDuckAt = useCallback((x: number, z: number) => {
@@ -26,7 +33,7 @@ export const DynamicEntitiesProvider = ({ children }: { children: ReactNode }) =
   }, [duckPosition]);
 
   return (
-    <DynamicEntitiesContext.Provider value={{ duckPosition, updateDuckPosition, isDuckAt }}>
+    <DynamicEntitiesContext.Provider value={{ duckPosition, updateDuckPosition, isDuckAt, playerPosition, updatePlayerPosition }}>
       {children}
     </DynamicEntitiesContext.Provider>
   );

@@ -6,6 +6,8 @@ import { isPositionOccupied, gridToWorld } from '../../config/testDecorations';
 import { DuckPositionDebug } from './GridDebug';
 import { WalkDustTrail } from './WalkDustTrail';
 import { useDynamicEntities } from '../../contexts/DynamicEntitiesContext';
+import { AUDIO_PATHS, AUDIO_VOLUMES } from '../../config/audioConfig';
+import { useAudioSettings } from '../../contexts/AudioContext';
 
 interface DuckProps {
   position?: [number, number, number];
@@ -23,6 +25,7 @@ const MIN_DISTANCE = 1; // Distance minimale de déplacement (cases)
 const MAX_DISTANCE = 3; // Distance maximale de déplacement (cases)
 const ROTATION_DURATION = 0.3; // Durée de la rotation
 const LOOK_AROUND_PROBABILITY = 0.6; // 60% de chance de regarder autour avant de bouger
+const PROXIMITY_RADIUS = 3; // Rayon de détection du joueur (en cases)
 
 export const Duck = ({
   position = [0, 0, 0],
@@ -31,8 +34,41 @@ export const Duck = ({
   gridPosition = { x: 15, z: 12 },
 }: DuckProps) => {
   const { scene } = useGLTF('/models/animals/duck.glb');
+  const { soundEffectsEnabled } = useAudioSettings();
   const groupRef = useRef<THREE.Group>(null);
-  const { updateDuckPosition } = useDynamicEntities();
+  const { updateDuckPosition, playerPosition } = useDynamicEntities();
+
+  // Références audio
+  const audioChicken1Ref = useRef<HTMLAudioElement | null>(null);
+  const audioChicken2Ref = useRef<HTMLAudioElement | null>(null);
+  const wasPlayerNearRef = useRef(false); // Pour détecter quand le joueur entre dans la zone
+
+  // Initialiser les audios
+  useMemo(() => {
+    if (typeof window !== 'undefined') {
+      audioChicken1Ref.current = new Audio(AUDIO_PATHS.sfx.chicken1);
+      audioChicken1Ref.current.volume = AUDIO_VOLUMES.chicken;
+
+      audioChicken2Ref.current = new Audio(AUDIO_PATHS.sfx.chicken2);
+      audioChicken2Ref.current.volume = AUDIO_VOLUMES.chicken;
+    }
+    return null;
+  }, []);
+
+  // Fonction pour jouer un son aléatoire
+  const playRandomChickenSound = useCallback(() => {
+    if (!soundEffectsEnabled) return;
+
+    const sounds = [audioChicken1Ref.current, audioChicken2Ref.current];
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+
+    if (randomSound) {
+      randomSound.currentTime = 0;
+      randomSound.play().catch(error => {
+        console.log('Erreur lors de la lecture du son de poulet:', error);
+      });
+    }
+  }, [soundEffectsEnabled]);
 
   // Utiliser des refs pour tout l'état du mouvement
   const currentGridPosRef = useRef(gridPosition);
@@ -145,6 +181,24 @@ export const Duck = ({
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
+
+    // Détecter la proximité du joueur
+    if (playerPosition) {
+      const dx = playerPosition.x - currentGridPosRef.current.x;
+      const dz = playerPosition.z - currentGridPosRef.current.z;
+      const distance = Math.sqrt(dx * dx + dz * dz);
+      const isPlayerNear = distance <= PROXIMITY_RADIUS;
+
+      // Si le joueur vient d'entrer dans la zone de proximité
+      if (isPlayerNear && !wasPlayerNearRef.current) {
+        playRandomChickenSound();
+        wasPlayerNearRef.current = true;
+      }
+      // Si le joueur a quitté la zone de proximité
+      else if (!isPlayerNear && wasPlayerNearRef.current) {
+        wasPlayerNearRef.current = false;
+      }
+    }
 
     if (isRotatingRef.current) {
       // Animation de rotation

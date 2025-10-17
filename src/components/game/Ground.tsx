@@ -26,6 +26,16 @@ export const Ground = () => {
 
   return (
     <group>
+      {/* Invisible ground plane to receive shadows */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, -0.01, 0]}
+        receiveShadow
+      >
+        <planeGeometry args={[totalSize, totalSize]} />
+        <shadowMaterial opacity={0.15} />
+      </mesh>
+
       {/* White grid lines */}
       <lineSegments geometry={geometry}>
         <lineBasicMaterial color="#FFFFFF" toneMapped={false} />

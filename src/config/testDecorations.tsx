@@ -9,6 +9,7 @@ import { Car } from '../components/game/Car';
 import { ParkingSpot } from '../components/game/ParkingSpot';
 import { Cactus } from '../components/game/Cactus';
 import { OldMan } from '../components/game/OldMan';
+import { CrystalDiamond, CrystalCluster, CrystalStar } from '../components/game/FloatingCrystalVariants';
 import type { CollisionSoundType } from '../hooks/useCollisionSound';
 
 // Configuration pour les modèles de test (sans GLB)
@@ -703,6 +704,41 @@ const allDecorations: TestDecoration[] = [
     id: 'car-collision-1',
     Component: () => null,
     gridPosition: { x: 21, z: 13 },
+  },
+
+  // Cristaux flottants - Points d'intérêt (6 cristaux avec 3 designs différents)
+  // 2x Design Étoile (Design 6)
+  {
+    id: 'crystal-star-1',
+    Component: (props: any) => <CrystalStar {...props} type="blue" />,
+    gridPosition: { x: 2, z: 5 },
+  },
+  {
+    id: 'crystal-star-2',
+    Component: (props: any) => <CrystalStar {...props} type="red" />,
+    gridPosition: { x: 15, z: 2 },
+  },
+  // 2x Design Diamant (Design 3)
+  {
+    id: 'crystal-diamond-1',
+    Component: (props: any) => <CrystalDiamond {...props} type="green" />,
+    gridPosition: { x: 3, z: 13 },
+  },
+  {
+    id: 'crystal-diamond-2',
+    Component: (props: any) => <CrystalDiamond {...props} type="gold" />,
+    gridPosition: { x: 13, z: 19 },
+  },
+  // 2x Design Cluster (Design 4)
+  {
+    id: 'crystal-cluster-1',
+    Component: (props: any) => <CrystalCluster {...props} type="red" />,
+    gridPosition: { x: 18, z: 10 },
+  },
+  {
+    id: 'crystal-cluster-2',
+    Component: (props: any) => <CrystalCluster {...props} type="blue" />,
+    gridPosition: { x: 15, z: 16 },
   },
 ];
 

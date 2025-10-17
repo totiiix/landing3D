@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useKeyboard } from '../../hooks/useKeyboard';
 import { useFootstepSound } from '../../hooks/useFootstepSound';
 import { useCollisionSound } from '../../hooks/useCollisionSound';
-import { isPositionOccupied, getCollisionSoundAt } from '../../config/testDecorations';
+import { isPositionOccupied, getCollisionSoundAt, isNearCar } from '../../config/testDecorations';
 import { VoxelCharacter } from './VoxelCharacter';
 import { DustParticles } from './DustParticles';
 import { WalkDustTrail } from './WalkDustTrail';
@@ -21,9 +21,11 @@ const FALL_START_HEIGHT = 6; // Height from which character falls
 interface PlayerProps {
   characterId: string;
   isEntering: boolean;
+  onExitRequested?: () => void;
+  onNearCarChange?: (isNear: boolean) => void;
 }
 
-export const Player = ({ characterId, isEntering }: PlayerProps) => {
+export const Player = ({ characterId, isEntering, onExitRequested, onNearCarChange }: PlayerProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const keys = useKeyboard();
   const { playFootstep, stopFootstep, playLanding } = useFootstepSound();
@@ -44,6 +46,10 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
 
   // Collision tracking
   const lastCollisionPositionRef = useRef<string | null>(null);
+
+  // Car interaction tracking
+  const [isNearCarState, setIsNearCarState] = useState(false);
+  const interactKeyPressedRef = useRef(false);
 
   // Reset entrance animation when character changes
   useEffect(() => {
@@ -173,6 +179,28 @@ export const Player = ({ characterId, isEntering }: PlayerProps) => {
   useEffect(() => {
     if (!keys.jump) keyPressedRef.current.jump = false;
   }, [keys.jump]);
+
+  // Check proximity to car and handle interact key
+  useEffect(() => {
+    // Check if player is near car
+    const nearCar = isNearCar(gridPos.x, gridPos.z);
+
+    if (nearCar !== isNearCarState) {
+      setIsNearCarState(nearCar);
+      onNearCarChange?.(nearCar);
+    }
+
+    // Handle interact key (E) when near car
+    if (nearCar && keys.interact && !interactKeyPressedRef.current) {
+      interactKeyPressedRef.current = true;
+      onExitRequested?.();
+    }
+
+    // Reset interact key state when released
+    if (!keys.interact) {
+      interactKeyPressedRef.current = false;
+    }
+  }, [gridPos, keys.interact, isNearCarState, onExitRequested, onNearCarChange]);
 
   // Animation frame
   useFrame((_, delta) => {

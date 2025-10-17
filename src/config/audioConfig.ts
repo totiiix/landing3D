@@ -12,6 +12,11 @@ export const AUDIO_PATHS = {
     trainHorn: '/audio/sfx/train_horn.mp3',
     chicken1: '/audio/sfx/chicken1.mp3',
     chicken2: '/audio/sfx/chicken2.mp3',
+    // Car sounds
+    carDoorOpen: '/audio/sfx/car/door-open.mp3',
+    carDoorClose: '/audio/sfx/car/door-close.mp3',
+    carEngineStart: '/audio/sfx/car/engine-start.mp3',
+    carEngineDriving: '/audio/sfx/car/engine-driving.mp3',
   },
   collisions: {
     default: '/audio/sfx/collision.mp3',
@@ -36,4 +41,7 @@ export const AUDIO_VOLUMES = {
   collision: 0.8,    // Volume des collisions
   trainHorn: 0.3,    // Volume du klaxon du train
   chicken: 0.5,      // Volume des sons de canard/poule
+  carDoor: 0.4,      // Volume des portières de voiture
+  carEngineStart: 0.5, // Volume du démarrage du moteur
+  carEngineDriving: 0.3, // Volume du moteur en conduite
 };

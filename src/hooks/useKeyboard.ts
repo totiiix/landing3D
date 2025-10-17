@@ -6,6 +6,7 @@ interface KeyboardState {
   left: boolean;
   right: boolean;
   jump: boolean;
+  interact: boolean;
 }
 
 export const useKeyboard = () => {
@@ -15,6 +16,7 @@ export const useKeyboard = () => {
     left: false,
     right: false,
     jump: false,
+    interact: false,
   });
 
   useEffect(() => {
@@ -45,6 +47,9 @@ export const useKeyboard = () => {
           e.preventDefault();
           setKeys((prev) => ({ ...prev, jump: true }));
           break;
+        case 'e':
+          setKeys((prev) => ({ ...prev, interact: true }));
+          break;
       }
     };
 
@@ -72,6 +77,9 @@ export const useKeyboard = () => {
           break;
         case ' ':
           setKeys((prev) => ({ ...prev, jump: false }));
+          break;
+        case 'e':
+          setKeys((prev) => ({ ...prev, interact: false }));
           break;
       }
     };

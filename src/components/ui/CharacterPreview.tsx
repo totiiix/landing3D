@@ -1,40 +1,33 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { VoxelCharacter } from '../game/VoxelCharacter';
-import { Suspense, useRef, useMemo } from 'react';
+import { Suspense, useRef, useMemo, MutableRefObject } from 'react';
 import * as THREE from 'three';
 
 interface CharacterPreviewProps {
   characterId: string;
   isActive: boolean;
-  mousePos?: { x: number; y: number };
+  mousePosRef?: MutableRefObject<{ x: number; y: number }>;
   previewCenter?: { x: number; y: number };
 }
 
 const RotatingCharacter = ({
   characterId,
-  mousePos,
+  mousePosRef,
   previewCenter
 }: {
   characterId: string;
-  mousePos?: { x: number; y: number };
+  mousePosRef?: MutableRefObject<{ x: number; y: number }>;
   previewCenter?: { x: number; y: number };
 }) => {
   const groupRef = useRef<THREE.Group>(null);
 
-  const targetRotation = useMemo(() => {
-    if (!mousePos || !previewCenter) return 0; // Default: face forward
-
-    // Calculate angle from preview center to mouse
-    const dx = mousePos.x - previewCenter.x;
-    const dy = mousePos.y - previewCenter.y;
-    const angle = Math.atan2(dx, dy);
-
-    // Model is already rotated 180° in VoxelCharacter, so just use the angle
-    return angle;
-  }, [mousePos, previewCenter]);
-
   useFrame(() => {
-    if (groupRef.current) {
+    if (groupRef.current && mousePosRef && previewCenter) {
+      // Calculate angle from preview center to mouse using current ref value
+      const dx = mousePosRef.current.x - previewCenter.x;
+      const dy = mousePosRef.current.y - previewCenter.y;
+      const targetRotation = Math.atan2(dx, dy);
+
       // Smooth rotation interpolation
       const current = groupRef.current.rotation.y;
       const diff = targetRotation - current;
@@ -54,7 +47,7 @@ const RotatingCharacter = ({
   );
 };
 
-export const CharacterPreview = ({ characterId, isActive, mousePos, previewCenter }: CharacterPreviewProps) => {
+export const CharacterPreview = ({ characterId, isActive, mousePosRef, previewCenter }: CharacterPreviewProps) => {
   return (
     <div style={{
       width: '100%',
@@ -77,7 +70,7 @@ export const CharacterPreview = ({ characterId, isActive, mousePos, previewCente
           {/* Character */}
           <RotatingCharacter
             characterId={characterId}
-            mousePos={mousePos}
+            mousePosRef={mousePosRef}
             previewCenter={previewCenter}
           />
         </Suspense>

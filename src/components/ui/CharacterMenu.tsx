@@ -1,13 +1,13 @@
-import { useRef } from 'react';
+import { useRef, memo, MutableRefObject } from 'react';
 import { CharacterPreview } from './CharacterPreview';
 
 interface CharacterMenuProps {
   currentCharacter: string;
   onSelectCharacter: (characterId: string) => void;
-  mousePos: { x: number; y: number };
+  mousePosRef: MutableRefObject<{ x: number; y: number }>;
 }
 
-export const CharacterMenu = ({ currentCharacter, onSelectCharacter, mousePos }: CharacterMenuProps) => {
+const CharacterMenuComponent = ({ currentCharacter, onSelectCharacter, mousePosRef }: CharacterMenuProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const characters = Array.from({ length: 14 }, (_, i) => ({
     id: `Char${String(i + 1).padStart(2, '0')}`,
@@ -85,7 +85,7 @@ export const CharacterMenu = ({ currentCharacter, onSelectCharacter, mousePos }:
               <CharacterPreview
                 characterId={char.id}
                 isActive={currentCharacter === char.id}
-                mousePos={mousePos}
+                mousePosRef={mousePosRef}
                 previewCenter={{ x: previewCenterX, y: previewCenterY }}
               />
             </div>
@@ -95,3 +95,5 @@ export const CharacterMenu = ({ currentCharacter, onSelectCharacter, mousePos }:
     </div>
   );
 };
+
+export const CharacterMenu = memo(CharacterMenuComponent);

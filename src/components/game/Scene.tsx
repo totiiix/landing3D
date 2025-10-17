@@ -6,14 +6,47 @@ import { DecorationLayer } from './DecorationLayer';
 import { TestDecorationLayer } from './TestDecorationLayer';
 import { GridDebug } from './GridDebug';
 import { GlobalFog } from './GlobalFog';
-import { memo } from 'react';
+import { ExitCarAnimation } from './ExitCarAnimation';
+import { memo, useState } from 'react';
+import { gridToWorld, CAR_POSITION } from '../../config/testDecorations';
+import { useCarSounds } from '../../hooks/useCarSounds';
 
 interface SceneProps {
   characterId: string;
   isEntering: boolean;
+  onExitComplete?: () => void;
+  onNearCarChange?: (isNear: boolean) => void;
 }
 
-const SceneComponent = ({ characterId, isEntering }: SceneProps) => {
+const SceneComponent = ({ characterId, isEntering, onExitComplete, onNearCarChange }: SceneProps) => {
+  const [isExiting, setIsExiting] = useState(false);
+  const [showExitCar, setShowExitCar] = useState(false);
+  const { playDoorOpen, playDoorClose } = useCarSounds();
+
+  const handleExitRequested = () => {
+    setIsExiting(true);
+
+    // Séquence de sons pour entrer dans la voiture
+    playDoorOpen();
+
+    // Fermer la porte après un court délai
+    setTimeout(() => {
+      playDoorClose();
+    }, 800);
+
+    // Afficher la voiture qui part après que la porte se ferme
+    setTimeout(() => {
+      setShowExitCar(true);
+    }, 1200);
+  };
+
+  const handleExitAnimationComplete = () => {
+    onExitComplete?.();
+  };
+
+  // Convert car grid position to world position
+  const carWorldPos = gridToWorld(CAR_POSITION.x, CAR_POSITION.z);
+
   return (
     <Canvas shadows camera={{ position: [0, 8, -8], fov: 60 }}>
       {/* Global Fog Effect */}
@@ -65,12 +98,27 @@ const SceneComponent = ({ characterId, isEntering }: SceneProps) => {
       />
 
       {/* Game Objects */}
-      <Player characterId={characterId} isEntering={isEntering} />
+      {!isExiting && (
+        <Player
+          characterId={characterId}
+          isEntering={isEntering}
+          onExitRequested={handleExitRequested}
+          onNearCarChange={onNearCarChange}
+        />
+      )}
       <Ground />
       <DecorationLayer />
 
       {/* Test Decorations - Commentez cette ligne pour désactiver les modèles de test */}
-      <TestDecorationLayer />
+      {!showExitCar && <TestDecorationLayer />}
+
+      {/* Exit Animation */}
+      {showExitCar && (
+        <ExitCarAnimation
+          startPosition={[carWorldPos.x, 0, carWorldPos.z]}
+          onComplete={handleExitAnimationComplete}
+        />
+      )}
 
       {/* Debug: Points rouges au centre de chaque case - Décommentez pour debug */}
       {/* <GridDebug /> */}

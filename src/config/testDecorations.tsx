@@ -763,3 +763,16 @@ export const getCollisionSoundAt = (x: number, z: number): CollisionSoundType =>
   );
   return deco?.collisionSound || 'default';
 };
+
+// Position de la voiture pour la fonctionnalité de sortie
+export const CAR_POSITION = { x: 20.1, z: 11 };
+
+// Fonction pour calculer la distance entre deux positions
+export const getDistance = (x1: number, z1: number, x2: number, z2: number): number => {
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
+};
+
+// Fonction pour vérifier si le joueur est près de la voiture
+export const isNearCar = (playerX: number, playerZ: number, maxDistance = 1.5): boolean => {
+  return getDistance(playerX, playerZ, CAR_POSITION.x, CAR_POSITION.z) <= maxDistance;
+};
